@@ -1,13 +1,13 @@
 # Piece of Code
-...because it's a PoC 😜
 
 ## Requirements
 1. Makefile
 1. uv
 
 ## Development
-```sh
-$ cp -i .env.example .env
-$ make dev
-```
+1. Setup environment variables.
+    ```sh
+    cp -i .streamlit/secrets.toml.example .streamlit/secrets.toml
+    ```
+2. Note that instead of `.env`, we are using `secrets.toml` located in the `.streamlit` directory to store secrets for this project
 

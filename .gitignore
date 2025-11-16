@@ -246,3 +246,4 @@ $RECYCLE.BIN/
 /tmp
 /temp
 cert.pem
+.streamlit/secrets.toml

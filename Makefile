@@ -1,6 +1,5 @@
 .PHONY: clean run
 .DEFAULT: help
-include .env
 
 help: ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of"
@@ -23,6 +22,4 @@ check: ## Run code checks with Ruff
 dev: ## Run the app
 	uv run streamlit run src/main.py \
 		--server.fileWatcherType auto \
-		--server.runOnSave true \
-		--server.address ${APP_HOST} \
-		--server.port $(APP_PORT)
+		--server.runOnSave true
