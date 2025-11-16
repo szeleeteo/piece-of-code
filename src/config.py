@@ -41,7 +41,7 @@ run_button_settings = {
 
 
 PYTHON_EDITOR_SETTINGS = {
-    "height": [26, 26],  # lines
+    "height": [24, 24],  # lines
     "focus": True,
     "buttons": [run_button_settings],
     "props": {
