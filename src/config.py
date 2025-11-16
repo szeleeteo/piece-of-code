@@ -35,13 +35,13 @@ run_button_settings = {
     "showWithIcon": True,
     "commands": ["submit"],
     "alwaysOn": True,
-    "style": {"bottom": "0.44rem", "right": "0.4rem"},
+    "style": {"top": "0.44rem", "right": "0.4rem"},
     "bindKey": {"win": "Ctrl-Enter", "mac": "Command-Enter"},
 }
 
 
 PYTHON_EDITOR_SETTINGS = {
-    "height": [24, 24],  # lines
+    "height": [26, 26],  # lines
     "focus": True,
     "buttons": [run_button_settings],
     "props": {
