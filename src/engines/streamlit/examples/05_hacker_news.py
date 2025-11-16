@@ -80,6 +80,7 @@ def time_ago(ts: int | None) -> str:
 # Sidebar controls
 # ----------------------------
 
+st.divider()
 st.sidebar.title("Hacker News Controls")
 limit = st.sidebar.slider(
     "How many stories?", min_value=10, max_value=100, value=100, step=10

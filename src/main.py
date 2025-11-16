@@ -99,8 +99,6 @@ def get_settings():
         )
         st.toggle("Swap Panels", key="swap_panels")
 
-        st.divider()
-
     code_panel, preview_panel = get_panels()
     return app_engine, code_panel, preview_panel, code
 
