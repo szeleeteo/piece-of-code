@@ -59,6 +59,7 @@ function App() {
       fontWeight: 'bold',
       backgroundColor: 'white',
       border: '3px solid #1a73e8',
+      borderColor: '#1a73e8',
       cursor: board[index] || winner ? 'not-allowed' : 'pointer',
       transition: 'all 0.2s',
       display: 'flex',

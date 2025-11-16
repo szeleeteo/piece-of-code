@@ -1,6 +1,6 @@
 // Todo List App with CRUD Operations
 
-const { createElement: h, useState, useEffect, useCallback, useMemo, useRef } = React;
+const { createElement: h, useState } = React;
 const { createRoot } = ReactDOM;
 
 function App() {

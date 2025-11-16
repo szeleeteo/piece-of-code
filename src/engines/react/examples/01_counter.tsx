@@ -1,6 +1,6 @@
 // Counter App: Increment, Decrement, and Reset
 
-const { createElement: h, useState, useEffect, useCallback, useMemo, useRef } = React;
+const { createElement: h, useState } = React;
 const { createRoot } = ReactDOM;
 
 function App() {
