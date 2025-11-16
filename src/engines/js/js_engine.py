@@ -4,7 +4,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from streamlit.delta_generator import DeltaGenerator
 
-from src.engines.base_engine import BaseEngine
+from ..base_engine import BaseEngine
 
 
 class JSEngine(BaseEngine):

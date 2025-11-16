@@ -21,7 +21,7 @@ check: ## Run code checks with Ruff
 	uv tool run pre-commit run --all-files
 
 dev: ## Run the app
-	uv run python -m streamlit run src/main.py \
+	uv run streamlit run src/main.py \
 		--server.fileWatcherType auto \
 		--server.runOnSave true \
 		--server.address ${APP_HOST} \

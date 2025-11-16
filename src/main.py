@@ -2,7 +2,7 @@ import streamlit as st
 from code_editor import code_editor
 from dotenv import load_dotenv
 
-from src.config import (
+from config import (
     CODE_PREVIEW_THRESHOLD,
     CODE_PREVIEW_WIDTH,
     ENGINE_MAPPING,
@@ -10,7 +10,7 @@ from src.config import (
     Engine,
     OutputLayout,
 )
-from src.engines import BaseEngine
+from engines import BaseEngine
 
 load_dotenv()
 

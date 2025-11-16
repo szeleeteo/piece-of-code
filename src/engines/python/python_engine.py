@@ -6,7 +6,7 @@ from pathlib import Path
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
-from src.engines.base_engine import BaseEngine
+from ..base_engine import BaseEngine
 
 DISALLOWED_PYTHON_PACKAGES = frozenset(
     {"os", "sys", "subprocess", "shutil", "pathlib", "socket"}

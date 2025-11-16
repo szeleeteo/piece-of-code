@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from src.engines import JSEngine, PythonEngine, StreamlitEngine
+from engines import JSEngine, PythonEngine, StreamlitEngine
 
 
 class OutputLayout(StrEnum):
