@@ -1,5 +1,8 @@
 // Tic-Tac-Toe Game
 
+const { createElement: h, useState, useEffect, useCallback, useMemo, useRef } = React;
+const { createRoot } = ReactDOM;
+
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
@@ -184,3 +187,8 @@ function App() {
     )
   );
 }
+
+const root = createRoot(document.getElementById('root'));
+root.render(h(App));
+
+export {}; // Make this file a module to avoid global scope conflicts

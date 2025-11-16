@@ -56,13 +56,7 @@ class ReactEngine(BaseEngine):
 <body>
     <div id="root"></div>
     <script type="text/babel" data-type="module">
-        const {{ createElement: h, useState, useEffect, useCallback, useMemo, useRef }} = React;
-        const {{ createRoot }} = ReactDOM;
-
 {code}
-
-        const root = createRoot(document.getElementById('root'));
-        root.render(h(App));
     </script>
 </body>
 </html>

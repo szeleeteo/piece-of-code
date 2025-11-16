@@ -1,5 +1,8 @@
 // Counter App: Increment, Decrement, and Reset
 
+const { createElement: h, useState, useEffect, useCallback, useMemo, useRef } = React;
+const { createRoot } = ReactDOM;
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -121,3 +124,8 @@ function App() {
     )
   );
 }
+
+const root = createRoot(document.getElementById('root'));
+root.render(h(App));
+
+export {}; // Make this file a module to avoid global scope conflicts

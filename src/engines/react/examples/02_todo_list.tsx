@@ -1,5 +1,8 @@
 // Todo List App with CRUD Operations
 
+const { createElement: h, useState, useEffect, useCallback, useMemo, useRef } = React;
+const { createRoot } = ReactDOM;
+
 function App() {
   const [todos, setTodos] = useState([
     { id: 1, text: 'Learn React', completed: false },
@@ -294,3 +297,8 @@ function App() {
     )
   );
 }
+
+const root = createRoot(document.getElementById('root'));
+root.render(h(App));
+
+export {}; // Make this file a module to avoid global scope conflicts
