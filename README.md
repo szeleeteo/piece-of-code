@@ -1,4 +1,5 @@
 # Piece of Code
+...because it's a PoC 😜
 
 ## Requirements
 1. Makefile

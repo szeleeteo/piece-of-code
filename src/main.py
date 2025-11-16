@@ -1,20 +1,18 @@
 import streamlit as st
 from code_editor import code_editor
-from dotenv import load_dotenv
 
 from config import (
     CODE_PREVIEW_THRESHOLD,
     CODE_PREVIEW_WIDTH,
     ENGINE_MAPPING,
     PYTHON_EDITOR_SETTINGS,
+    TITLE,
     Engine,
     OutputLayout,
 )
 from engines import BaseEngine
 
-load_dotenv()
-
-st.set_page_config(page_title="Piece of Code", page_icon="⚡️", layout="wide")
+st.set_page_config(page_title=TITLE, page_icon="⚡️", layout="wide")
 
 
 if "output_layout" not in st.session_state:
@@ -28,19 +26,19 @@ def reset_code_selection():
 
 def get_panels():
     split_ratio = st.session_state.split_ratio
-    split_balance = CODE_PREVIEW_WIDTH - split_ratio
-    is_extreme_left = split_ratio <= CODE_PREVIEW_THRESHOLD * CODE_PREVIEW_WIDTH
-    is_extreme_right = split_ratio >= (1 - CODE_PREVIEW_THRESHOLD) * CODE_PREVIEW_WIDTH
+    reversed_split = CODE_PREVIEW_WIDTH - split_ratio
+    should_max_left = split_ratio <= CODE_PREVIEW_THRESHOLD * CODE_PREVIEW_WIDTH
+    should_max_right = split_ratio >= (1 - CODE_PREVIEW_THRESHOLD) * CODE_PREVIEW_WIDTH
 
-    if is_extreme_left or is_extreme_right:
+    if should_max_left or should_max_right:
         st.session_state.output_layout = OutputLayout.TABS
 
         tab_order = ["Code", "Preview"]
         if st.session_state.swap_panels:
             tab_order = tab_order[::-1]  # reverse order to swap
-            default_tab = "Preview" if is_extreme_right else "Code"
+            default_tab = "Preview" if should_max_right else "Code"
         else:
-            default_tab = "Code" if is_extreme_right else "Preview"
+            default_tab = "Code" if should_max_right else "Preview"
 
         tabs = st.tabs(tab_order, default=default_tab)
         code_panel = tabs[tab_order.index("Code")]
@@ -49,9 +47,9 @@ def get_panels():
         st.session_state.output_layout = OutputLayout.SIDE_BY_SIDE
 
         if st.session_state.swap_panels:
-            preview_panel, code_panel = st.columns([split_ratio, split_balance])
+            preview_panel, code_panel = st.columns([split_ratio, reversed_split])
         else:
-            code_panel, preview_panel = st.columns([split_ratio, split_balance])
+            code_panel, preview_panel = st.columns([split_ratio, reversed_split])
 
     return code_panel, preview_panel
 
@@ -104,7 +102,7 @@ def get_settings():
 
 
 def main():
-    st.title("Piece of Code")
+    st.title(TITLE, help="...because it's a PoC 😜")
 
     settings = get_settings()
     if settings is None:

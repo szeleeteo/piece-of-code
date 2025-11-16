@@ -2,6 +2,10 @@ from enum import StrEnum
 
 from engines import JSEngine, PythonEngine, StreamlitEngine
 
+TITLE = "Piece of Code"
+CODE_PREVIEW_WIDTH = 10
+CODE_PREVIEW_THRESHOLD = 0.2
+
 
 class OutputLayout(StrEnum):
     SIDE_BY_SIDE = "side-by-side"
@@ -19,10 +23,6 @@ ENGINE_MAPPING = {
     Engine.STREAMLIT: StreamlitEngine,
     Engine.JS: JSEngine,
 }
-
-
-CODE_PREVIEW_WIDTH = 10
-CODE_PREVIEW_THRESHOLD = 0.2
 
 
 run_button_settings = {

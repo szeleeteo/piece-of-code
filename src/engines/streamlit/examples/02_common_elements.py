@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+st.title("Common Elements Example")
+
 np.random.seed(42)
 
 users = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi"]

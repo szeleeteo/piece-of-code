@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+st.title("Misc Elements Example")
+
 if "counter" not in st.session_state:
     st.session_state.counter = 0
 
@@ -44,8 +46,8 @@ st.file_uploader("Upload a file")
 random_df = pd.DataFrame(np.random.randn(3, 3), columns=["A", "B", "C"])
 st.download_button("Download data", data=random_df.to_csv(), file_name="data.csv")
 
-messages = st.container(height=100)
-if prompt := st.chat_input("Say something", accept_file=True):
+messages = st.container(height=250)
+if prompt := st.chat_input("Say something"):
     messages.chat_message("user").write(prompt)
     messages.chat_message("assistant").write(f"Echo: {prompt}")
 

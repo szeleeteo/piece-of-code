@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+st.title("Tabular Elements Example")
+
 random_data = [
     {
         "Preview": f"https://picsum.photos/400/200?lock={i}",
