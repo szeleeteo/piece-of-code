@@ -46,4 +46,6 @@ st.file_uploader("Upload a file")
 random_df = pd.DataFrame(np.random.randn(3, 3), columns=["A", "B", "C"])
 st.download_button("Download data", data=random_df.to_csv(), file_name="data.csv")
 
-st.audio_input("Record audio")
+audio_value = st.audio_input("Record high quality audio")
+if audio_value:
+    st.audio(audio_value)
