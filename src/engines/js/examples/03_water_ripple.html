@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Water Ripple Visualization</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a1a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="info">Move mouse to create ripples • Click for stronger ripples • Scroll to adjust strength</div>
+    <script>
+        // --- Setup ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        let DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+        const state = {
+            rippleStrength: 0.8,
+            pointer: { x: -9999, y: -9999, prevX: -9999, prevY: -9999, isDown: false }
+        };
+
+        let width = 0, height = 0;
+
+        // Store active ripples for line rendering
+        let ripples = [];
+
+        function resize() {
+            const { innerWidth: w, innerHeight: h } = window;
+            DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+            canvas.width = Math.floor(w * DPR);
+            canvas.height = Math.floor(h * DPR);
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+            width = canvas.clientWidth;
+            height = canvas.clientHeight;
+        }
+
+        // Ripple class for individual ripple rings
+        class Ripple {
+            constructor(x, y, strength) {
+                this.x = x;
+                this.y = y;
+                this.radius = 0;
+                this.maxRadius = 200 + strength * 100;
+                this.speed = 2 + strength * 0.5;
+                this.strength = strength;
+                this.alpha = 1;
+            }
+
+            update() {
+                this.radius += this.speed;
+                this.alpha = 1 - (this.radius / this.maxRadius);
+                return this.radius < this.maxRadius;
+            }
+
+            draw() {
+                if (this.alpha <= 0) return;
+
+                // Draw multiple concentric rings for more pronounced effect
+                const numRings = 3;
+                for (let i = 0; i < numRings; i++) {
+                    const offset = i * 8;
+                    const r = this.radius - offset;
+                    if (r > 0) {
+                        const ringAlpha = this.alpha * (1 - i * 0.3);
+
+                        // Outer glow
+                        ctx.strokeStyle = `rgba(100, 200, 255, ${ringAlpha * 0.3})`;
+                        ctx.lineWidth = 4;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        // Inner bright line
+                        ctx.strokeStyle = `rgba(150, 230, 255, ${ringAlpha * 0.8})`;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        // Very thin white highlight
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${ringAlpha * 0.6})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Draw ripples with beautiful gradient effect
+        function drawRipples() {
+            // Clear with deep blue-black gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, '#0a0a1a');
+            gradient.addColorStop(1, '#050510');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // Update and draw all ripples
+            ctx.save();
+            for (let i = ripples.length - 1; i >= 0; i--) {
+                const ripple = ripples[i];
+                if (!ripple.update()) {
+                    ripples.splice(i, 1);
+                } else {
+                    ripple.draw();
+                }
+            }
+            ctx.restore();
+        }
+
+        // --- Animation Loop ---
+        let lastMouseMoveTime = 0;
+        let lastRippleTime = 0;
+
+        function frame(ts) {
+            drawRipples();
+
+            // Add continuous ripples while mouse is moving
+            const timeSinceMove = ts - lastMouseMoveTime;
+            const timeSinceRipple = ts - lastRippleTime;
+
+            if (timeSinceMove < 50 && state.pointer.x > 0 && state.pointer.y > 0 && timeSinceRipple > 100) {
+                const dx = state.pointer.x - state.pointer.prevX;
+                const dy = state.pointer.y - state.pointer.prevY;
+                const speed = Math.sqrt(dx * dx + dy * dy);
+
+                if (speed > 0.5) {
+                    const strength = state.rippleStrength * Math.min(2, speed / 10);
+                    ripples.push(new Ripple(state.pointer.x, state.pointer.y, strength));
+                    lastRippleTime = ts;
+                }
+            }
+
+            requestAnimationFrame(frame);
+        }
+
+        // --- Pointer Interactions ---
+        function updatePointer(e) {
+            const rect = canvas.getBoundingClientRect();
+            state.pointer.prevX = state.pointer.x;
+            state.pointer.prevY = state.pointer.y;
+            state.pointer.x = e.clientX - rect.left;
+            state.pointer.y = e.clientY - rect.top;
+            lastMouseMoveTime = performance.now();
+        }
+
+        canvas.addEventListener('pointermove', updatePointer);
+
+        canvas.addEventListener('pointerdown', (e) => {
+            state.pointer.isDown = true;
+            updatePointer(e);
+            ripples.push(new Ripple(state.pointer.x, state.pointer.y, state.rippleStrength * 3));
+        });
+
+        canvas.addEventListener('pointerup', () => {
+            state.pointer.isDown = false;
+        });
+
+        // Adjust ripple strength with mouse wheel
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            state.rippleStrength += e.deltaY * -0.001;
+            state.rippleStrength = Math.max(0.3, Math.min(3, state.rippleStrength));
+        }, { passive: false });
+
+        // --- Boot ---
+        window.addEventListener('resize', resize);
+        resize();
+        requestAnimationFrame(frame);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Animated Wave</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="waveCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = 800;
+        canvas.height = 400;
+
+        let offset = 0;
+        const baseAmplitude = 80;
+        const frequency = 0.04;
+        const speed = 0.05;
+
+        function drawWave() {
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            for (let x = 0; x < canvas.width; x++) {
+                // Amplitude variation now moves with the wave
+                const amplitudeVariation = Math.sin((x * frequency + offset) * 0.25) * 50;
+                const amplitude = baseAmplitude + amplitudeVariation;
+                const y = canvas.height / 2 + Math.sin(x * frequency + offset) * amplitude;
+
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+
+            ctx.stroke();
+
+            offset += speed;
+            requestAnimationFrame(drawWave);
+        }
+
+        drawWave();
+    </script>
+</body>
+
+</html>
