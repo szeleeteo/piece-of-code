@@ -64,6 +64,7 @@ narwhals==2.11.0
 numpy==2.3.4
     # via
     #   pandas
+    #   piece-of-code
     #   pydeck
     #   streamlit
 packaging==25.0
@@ -71,7 +72,9 @@ packaging==25.0
     #   altair
     #   streamlit
 pandas==2.3.3
-    # via streamlit
+    # via
+    #   piece-of-code
+    #   streamlit
 pillow==12.0.0
     # via streamlit
 protobuf==6.33.1

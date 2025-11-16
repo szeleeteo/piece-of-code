@@ -21,6 +21,6 @@ def fibonacci_sequence(n):
     return fibonacci(n)
 
 
-N = 10
+N = 25
 for num in fibonacci_sequence(N):
     print(num)
