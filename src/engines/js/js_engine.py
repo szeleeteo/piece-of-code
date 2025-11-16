@@ -8,7 +8,7 @@ from ..base_engine import BaseEngine
 
 
 class JSEngine(BaseEngine):
-    """Builder for HTML/CSS/JavaScript applications."""
+    """Engine for rendering HTML/CSS/JavaScript applications."""
 
     @property
     def language(self) -> str:
@@ -16,11 +16,11 @@ class JSEngine(BaseEngine):
 
     def run(self, code: str, container: DeltaGenerator) -> None:
         """
-        Renders the provided HTML/CSS/JavaScript code inside the given result container.
+        Renders the provided HTML/CSS/JavaScript code inside the given container.
 
         Args:
-            script (str): The HTML/CSS/JavaScript code to render.
-            result_container (DeltaGenerator): The Streamlit container to render output in.
+            code (str): The HTML/CSS/JavaScript code to render.
+            container (DeltaGenerator): The Streamlit container to render output in.
 
         Returns:
             None
@@ -33,7 +33,7 @@ class JSEngine(BaseEngine):
                 st.exception(e)
 
     def list_examples(self) -> list[Path]:
-        """Lists available example files for this builder."""
+        """Lists available example files for this engine."""
         examples_dir = Path(__file__).parent / "examples"
         if examples_dir.exists() and examples_dir.is_dir():
             return list(examples_dir.glob("*.html"))

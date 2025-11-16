@@ -8,7 +8,7 @@ from ..base_engine import BaseEngine
 
 
 class ReactEngine(BaseEngine):
-    """Builder for React applications using TypeScript (no JSX)."""
+    """Engine for rendering React applications using TypeScript."""
 
     @property
     def language(self) -> str:
@@ -16,10 +16,10 @@ class ReactEngine(BaseEngine):
 
     def run(self, code: str, container: DeltaGenerator) -> None:
         """
-        Renders the provided React TypeScript code inside the given result container.
+        Renders the provided React TypeScript code inside the given container.
 
-        The code is wrapped in a complete HTML document with React, ReactDOM, and TypeScript
-        compiler loaded from CDN. The TypeScript code is transpiled to JavaScript in the browser.
+        The code is wrapped in a complete HTML document with React, ReactDOM, and Babel
+        loaded from CDN. The TypeScript code is transpiled to JavaScript in the browser.
 
         Args:
             code (str): The React TypeScript code to render.
@@ -69,7 +69,7 @@ class ReactEngine(BaseEngine):
                 st.exception(e)
 
     def list_examples(self) -> list[Path]:
-        """Lists available example files for this builder."""
+        """Lists available example files for this engine."""
         examples_dir = Path(__file__).parent / "examples"
         if examples_dir.exists() and examples_dir.is_dir():
             return list(examples_dir.glob("*.tsx"))

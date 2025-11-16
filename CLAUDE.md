@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-"Piece of Code" is a Streamlit-based interactive code playground that allows users to write and execute code snippets in multiple languages (Python, Streamlit, HTML/CSS/JavaScript) with live preview. Users can select examples, edit code in a built-in editor, and see results in real-time with adjustable side-by-side or tabbed layouts.
+"Piece of Code" is a Streamlit-based interactive code playground that allows users to write and execute code snippets in multiple languages (Python, Streamlit, HTML/CSS/JavaScript, React/TypeScript) with live preview. Users can select examples, edit code in a built-in editor, and see results in real-time with adjustable side-by-side or tabbed layouts.
 
 ## Development Setup
 
@@ -51,8 +51,12 @@ The application uses an **engine pattern** where each language/runtime is implem
 
 **Available Engines:**
 - **PythonEngine** ([src/engines/python/python_engine.py](src/engines/python/python_engine.py)): Executes Python code with `exec()`, captures stdout, blocks dangerous imports (os, sys, subprocess, shutil, pathlib, socket)
-- **StreamlitEngine** ([src/engines/streamlit/streamlit_engine.py](src/engines/streamlit/streamlit_engine.py)): Similar to PythonEngine but injects `st` into globals for Streamlit API access
+- **StreamlitEngine** ([src/engines/streamlit/streamlit_engine.py](src/engines/streamlit/streamlit_engine.py)): Extends PythonBaseEngine, injects `st` into globals for Streamlit API access, shows console output in expander
 - **JSEngine** ([src/engines/js/js_engine.py](src/engines/js/js_engine.py)): Renders HTML/CSS/JavaScript using `streamlit.components.v1.html()`
+- **ReactEngine** ([src/engines/react/react_engine.py](src/engines/react/react_engine.py)): Renders React/TypeScript code, wraps code in HTML template with React 18, ReactDOM, and Babel for browser-side transpilation
+
+**Shared Base Classes:**
+- **PythonBaseEngine** ([src/engines/python_base_engine.py](src/engines/python_base_engine.py)): Base class for Python-based engines, provides shared safety checks and execution logic, extensible via `get_execution_globals()` and `show_console_output()` methods
 
 **Engine Registration:**
 Engines are registered in [src/config.py](src/config.py) via `ENGINE_MAPPING` which maps `Engine` enum values to engine classes.
@@ -77,6 +81,7 @@ Each engine stores example files in its `examples/` subdirectory:
 - Python: `src/engines/python/examples/*.py`
 - Streamlit: `src/engines/streamlit/examples/*.py`
 - JavaScript: `src/engines/js/examples/*.html`
+- React: `src/engines/react/examples/*.tsx`
 
 Examples are discovered via `list_examples()` and presented in a dropdown, formatted as title-case with underscores replaced by spaces.
 
@@ -104,7 +109,9 @@ Dependencies are managed in [pyproject.toml](pyproject.toml). The [requirements.
 
 ## Safety Constraints
 
-Both PythonEngine and StreamlitEngine block imports of potentially dangerous packages:
+PythonEngine and StreamlitEngine (via PythonBaseEngine) block imports of potentially dangerous packages:
 - os, sys, subprocess, shutil, pathlib, socket
 
 This is a **basic safety measure** for user-submitted code execution, not a comprehensive sandbox. Code runs via `exec()` with isolated globals but shares the Python interpreter.
+
+JSEngine and ReactEngine render user-provided HTML/JavaScript in an iframe via `streamlit.components.v1.html()`, which provides browser-level sandboxing but should still be considered potentially unsafe for untrusted code.

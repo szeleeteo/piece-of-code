@@ -56,52 +56,74 @@ def get_panels():
     return code_panel, preview_panel
 
 
-def get_code(app_builder: BaseEngine) -> str:
+def get_code(app_engine: BaseEngine) -> str:
+    """
+    Loads code from selected example file.
+
+    Args:
+        app_engine: The engine instance to get examples from.
+
+    Returns:
+        str: The code content from the selected example, or empty string.
+    """
     code = ""
 
-    examples = sorted(app_builder.list_examples())
+    try:
+        examples = sorted(app_engine.list_examples())
 
-    if examples:
-        ex_paths = [ex for ex in examples]
-        selected_ex = st.selectbox(
-            "Examples",
-            ex_paths,
-            format_func=lambda f: f.stem.title().replace("_", " "),
-            key="example_selector",
-        )
-        if selected_ex:
-            code = selected_ex.read_text()
+        if examples:
+            selected_ex = st.selectbox(
+                "Examples",
+                examples,
+                format_func=lambda f: f.stem.title().replace("_", " "),
+                key="example_selector",
+            )
+            if selected_ex:
+                code = selected_ex.read_text()
+    except Exception as e:
+        st.error(f"Error loading examples: {e}")
 
     return code
 
 
 def get_settings():
-    with st.sidebar:
-        st.selectbox(
-            "Engine",
-            options=Engine,
-            key="app_engine",
-            on_change=reset_code_selection,
-        )
-        app_engine = ENGINE_MAPPING[st.session_state.app_engine]()
+    """
+    Configures sidebar settings and initializes the selected engine.
 
-        code = get_code(app_engine)
+    Returns:
+        tuple: (app_engine, code_panel, preview_panel, code) or None on error.
+    """
+    try:
+        with st.sidebar:
+            st.selectbox(
+                "Engine",
+                options=Engine,
+                key="app_engine",
+                on_change=reset_code_selection,
+            )
+            app_engine = ENGINE_MAPPING[st.session_state.app_engine]()
 
-        st.slider(
-            "Resize Panels",
-            min_value=int(CODE_PREVIEW_THRESHOLD * CODE_PREVIEW_WIDTH),
-            max_value=int((1 - CODE_PREVIEW_THRESHOLD) * CODE_PREVIEW_WIDTH),
-            value=CODE_PREVIEW_WIDTH // 2,
-            key="split_ratio",
-            format="",
-        )
-        st.toggle("Swap Panels", key="swap_panels")
+            code = get_code(app_engine)
 
-    code_panel, preview_panel = get_panels()
-    return app_engine, code_panel, preview_panel, code
+            st.slider(
+                "Resize Panels",
+                min_value=int(CODE_PREVIEW_THRESHOLD * CODE_PREVIEW_WIDTH),
+                max_value=int((1 - CODE_PREVIEW_THRESHOLD) * CODE_PREVIEW_WIDTH),
+                value=CODE_PREVIEW_WIDTH // 2,
+                key="split_ratio",
+                format="",
+            )
+            st.toggle("Swap Panels", key="swap_panels")
+
+        code_panel, preview_panel = get_panels()
+        return app_engine, code_panel, preview_panel, code
+    except Exception as e:
+        st.error(f"Error initializing application: {e}")
+        return None
 
 
 def main():
+    """Main application entry point."""
     st.title(TITLE)
 
     settings = get_settings()
@@ -110,23 +132,28 @@ def main():
 
     app_engine, code_panel, preview_panel, code = settings
 
-    with code_panel:
-        if st.session_state.output_layout == OutputLayout.SIDE_BY_SIDE:
-            st.write("Code")
-
-        code_panel = st.container(border=True)
+    try:
         with code_panel:
-            editor_output = code_editor(
-                lang=app_engine.language, code=code, **PYTHON_EDITOR_SETTINGS
-            )
-            code = editor_output["text"]
+            if st.session_state.output_layout == OutputLayout.SIDE_BY_SIDE:
+                st.write("Code")
 
-    with preview_panel:
-        if st.session_state.output_layout == OutputLayout.SIDE_BY_SIDE:
-            st.write("Preview")
+            code_panel = st.container(border=True)
+            with code_panel:
+                editor_output = code_editor(
+                    lang=app_engine.language, code=code, **PYTHON_EDITOR_SETTINGS
+                )
+                code = editor_output["text"]
 
-        preview_container = st.container(border=True, height="stretch")
-        app_engine.run(code, preview_container)
+        with preview_panel:
+            if st.session_state.output_layout == OutputLayout.SIDE_BY_SIDE:
+                st.write("Preview")
+
+            preview_container = st.container(border=True, height="stretch")
+            if code:
+                app_engine.run(code, preview_container)
+    except Exception as e:
+        st.error(f"Unexpected error: {e}")
+        st.exception(e)
 
 
 if __name__ == "__main__":

@@ -6,26 +6,26 @@ from streamlit.delta_generator import DeltaGenerator
 
 class BaseEngine(ABC):
     """
-    Abstract base class for code builders.
+    Abstract base class for code execution engines.
 
-    All builders must define a language, default code, and implement a build method
-    that executes/renders the script in the provided container.
+    All engines must define a language identifier and implement methods to
+    execute/render code and list available examples.
     """
 
     @property
     @abstractmethod
     def language(self) -> str:
-        """The programming language or format this builder supports (e.g., 'python', 'html')."""
+        """The programming language or format this engine supports (e.g., 'python', 'html')."""
         pass
 
     @abstractmethod
-    def run(self, code: str, result_container: DeltaGenerator) -> None:
+    def run(self, code: str, container: DeltaGenerator) -> None:
         """
-        Executes or renders the provided script inside the given result container.
+        Executes or renders the provided code inside the given container.
 
         Args:
-            script (str): The code/script to execute or render.
-            result_container (DeltaGenerator): The Streamlit container to render output in.
+            code (str): The code to execute or render.
+            container (DeltaGenerator): The Streamlit container to render output in.
 
         Returns:
             None
@@ -34,5 +34,5 @@ class BaseEngine(ABC):
 
     @abstractmethod
     def list_examples(self) -> list[Path]:
-        """Lists available example files for this builder."""
+        """Lists available example files for this engine."""
         pass
