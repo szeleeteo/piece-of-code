@@ -34,7 +34,7 @@ with left_col:
 with right_col:
     st.button("Reset counter", on_click=reset_counter)
     st.time_input("Pick a time")
-    color = st.color_picker("Pick a colour", "#00f900")
+    color = st.color_picker("Pick a colour", "#ae5630")
 
 if st.button("Click to open modal dialog"):
     show_meaning_of_life(num, color)
