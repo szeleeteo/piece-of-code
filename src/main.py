@@ -78,7 +78,7 @@ def get_code(app_builder: BaseEngine) -> str:
 
 def get_settings():
     with st.sidebar:
-        st.radio(
+        st.selectbox(
             "Engine",
             options=Engine,
             key="app_engine",
