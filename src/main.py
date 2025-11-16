@@ -104,7 +104,7 @@ def get_settings():
 
 
 def main():
-    st.title(TITLE, help="...because it's a PoC 😜")
+    st.title(TITLE)
 
     settings = get_settings()
     if settings is None:
