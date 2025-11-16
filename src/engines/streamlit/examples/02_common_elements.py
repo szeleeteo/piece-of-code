@@ -19,7 +19,7 @@ class ChartType(StrEnum):
 
 
 height = 250
-n_points = 250
+n_points = 150
 
 selected_users = st.multiselect("Select Users", users, default=users[:3])
 left_col, right_col = st.columns(2)
