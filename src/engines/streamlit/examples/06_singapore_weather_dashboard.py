@@ -157,7 +157,7 @@ if weather_data and weather_data.get("code") == 0:
     )
     display_df.columns = ["Area", "Forecast", "Latitude", "Longitude"]
 
-    st.dataframe(display_df, use_container_width=True, hide_index=True)
+    st.dataframe(display_df, width="stretch", hide_index=True)
 
     for idx, (condition, color) in enumerate(weather_legend.items()):
         with legend_cols[idx % 3]:
