@@ -67,7 +67,6 @@ def get_code(app_builder: BaseEngine) -> str:
             "Examples",
             ex_paths,
             format_func=lambda f: f.stem.title().replace("_", " "),
-            label_visibility="collapsed",
             key="example_selector",
         )
         if selected_ex:
@@ -83,7 +82,6 @@ def get_settings():
             options=Engine,
             key="app_engine",
             on_change=reset_code_selection,
-            label_visibility="collapsed",
         )
         app_engine = ENGINE_MAPPING[st.session_state.app_engine]()
 

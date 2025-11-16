@@ -63,7 +63,7 @@ class ReactEngine(BaseEngine):
 """
         with container:
             try:
-                components.html(html_template, height=640, scrolling=True)
+                components.html(html_template, height=800, scrolling=True)
             except Exception as e:
                 st.error(f"Error rendering React TypeScript: {e}")
                 st.exception(e)
