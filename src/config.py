@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from engines import JSEngine, PythonEngine, StreamlitEngine
+from engines import JSEngine, PythonEngine, ReactEngine, StreamlitEngine
 
 TITLE = "Piece of Code"
 CODE_PREVIEW_WIDTH = 10
@@ -16,12 +16,14 @@ class Engine(StrEnum):
     PYTHON = "Python"
     STREAMLIT = "Streamlit"
     JS = "HTML/CSS/JavaScript"
+    REACT = "React (TypeScript)"
 
 
 ENGINE_MAPPING = {
     Engine.PYTHON: PythonEngine,
     Engine.STREAMLIT: StreamlitEngine,
     Engine.JS: JSEngine,
+    Engine.REACT: ReactEngine,
 }
 
 
