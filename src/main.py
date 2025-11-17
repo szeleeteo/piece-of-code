@@ -12,9 +12,7 @@ from config import (
 )
 from engines import BaseEngine
 
-st.set_page_config(
-    page_title=TITLE, page_icon="⚡️", layout="wide", initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title=TITLE, page_icon="⚡️", layout="wide")
 
 
 if "output_layout" not in st.session_state:
