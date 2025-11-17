@@ -5,10 +5,10 @@ const { createRoot } = ReactDOM;
 
 function App() {
   const [todos, setTodos] = useState([
-    { id: 1, text: 'Build Python Engine', completed: true },
-    { id: 2, text: 'Build Streamlit Engine', completed: true },
-    { id: 3, text: 'Vibe Code HTML/CSS/Javascript Engine', completed: true },
-    { id: 4, text: 'Vibe Code React (TypeScript)', completed: false },
+    { id: 1, text: 'Python', completed: true },
+    { id: 2, text: 'Streamlit', completed: true },
+    { id: 3, text: 'HTML/CSS/Javascript', completed: true },
+    { id: 4, text: 'React (TypeScript)', completed: false },
   ]);
   const [inputValue, setInputValue] = useState('');
   const [editingId, setEditingId] = useState(null);
@@ -86,7 +86,7 @@ function App() {
       style: {
         fontSize: '2.5rem',
         marginBottom: '2rem',
-        color: '#1a73e8',
+        color: '#09d04eff',
         textAlign: 'center',
       }
     }, 'Todo List'),
