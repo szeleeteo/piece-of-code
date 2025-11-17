@@ -75,6 +75,7 @@ def get_code(app_engine: BaseEngine) -> str:
             selected_ex = st.selectbox(
                 "Examples",
                 examples,
+                placeholder="Select an example...",
                 format_func=lambda f: f.stem.title().replace("_", " "),
                 key="example_selector",
             )
