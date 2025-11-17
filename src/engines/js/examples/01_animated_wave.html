@@ -29,8 +29,12 @@
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = 800;
-        canvas.height = 400;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         let offset = 0;
         const baseAmplitude = 80;
